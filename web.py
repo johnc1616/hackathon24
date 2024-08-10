@@ -6,17 +6,17 @@ response = requests.get(url)
 response.raise_for_status() 
 soup = BeautifulSoup(response.text, 'html.parser')
 
-# Find all <div> elements with class 'event'
 events = soup.find_all('div', class_='EventCard-module--EventCard--3dc8c')
 
-# Print the complete HTML of each event
-for card in events:
-    # Find the <a> tag within the current event card
-    link = card.find('a', class_='EventCard-module--link--6562a')
-    
-    if link:
-        # Extract the href attribute
-        href = link.get('href')
-        print(f"Event URL: {href}")
+eventsdata = []
 
+for card in events:
+    date_span = card.find('span', class_='EventCard-module--date--d8888')
+    date = date_span.get_text(strip=True) if date_span else 'No date available'
+    
+    title_h3 = card.find('h3', class_='EventCard-module--name--c1353')
+    title = title_h3.get_text(strip=True) if title_h3 else 'No title available'
+    
+    print(f"Title: {title}")
+    print(f"Date: {date}")
     print("-" * 40)
